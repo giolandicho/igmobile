@@ -50,9 +50,53 @@ export default function HomeScreen(props) {
     </TouchableHighlight>
   );
 
+  const renderCarousel = () => {
+    return(
+      <View style={styles.carouselContainer}>
+        <View style={styles.carousel}>
+          <Carousel
+            ref={slider1Ref}
+            data={item.photosArray}
+            renderItem={renderImage}
+            sliderWidth={viewportWidth}
+            itemWidth={viewportWidth}
+            inactiveSlideScale={1}
+            inactiveSlideOpacity={1}
+            firstItem={0}
+            loop={false}
+            autoplay={false}
+            autoplayDelay={500}
+            autoplayInterval={3000}
+            onSnapToItem={(index) => setActiveSlide(0)}
+          />
+          <Pagination
+            dotsLength={item.photosArray.length}
+            activeDotIndex={activeSlide}
+            containerStyle={styles.paginationContainer}
+            dotColor="rgba(255, 255, 255, 0.92)"
+            dotStyle={styles.paginationDot}
+            inactiveDotColor="white"
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+            carouselRef={slider1Ref.current}
+            tappableDots={!!slider1Ref.current}
+          />
+        </View>  
+      </View>
+    )
+  }
+
   return (
     <View>
-      <FlatList vertical showsVerticalScrollIndicator={false} numColumns={2} data={products} renderItem={renderProducts} keyExtractor={(item) => `${item.productId}`} />
+      <FlatList 
+        vertical 
+        showsVerticalScrollIndicator={false} 
+        numColumns={2} 
+        data={products} 
+        renderItem={renderProducts} 
+        keyExtractor={(item) => `${item.productId}`}
+        ListHeaderComponent={renderCarousel} 
+      />
     </View>
   );
 }
@@ -63,5 +107,41 @@ const styles = StyleSheet.create({
   photo: ProductCard.photo,
   title: ProductCard.title,
   category: ProductCard.category,
+  paginationContainer: {
+    flex: 1,
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingVertical: 8,
+    marginTop: 200
+  },
+  carouselContainer: {
+    minHeight: 250
+  },
+  carousel: {},
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    width: '100%',
+    height: 250,
+    resizeMode: 'contain',
+  },
+  imageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    width: viewportWidth,
+    height: 250
+  },
+  paginationContainer: {
+    flex: 1,
+    position: 'absolute',
+    alignSelf: 'center',
+    paddingVertical: 8,
+    marginTop: 100
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 0
+  },
   
 });
